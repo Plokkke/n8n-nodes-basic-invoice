@@ -21,7 +21,7 @@ export type Person = {
 	name: string;
 	email?: string;
 	address?: Address;
-	nationalNumber?: string | boolean;
+	nationalNumber?: string;
 };
 
 export type InvoiceLine = {

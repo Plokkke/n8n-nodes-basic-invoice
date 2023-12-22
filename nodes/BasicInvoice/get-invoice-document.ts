@@ -26,15 +26,13 @@ function printLines(lines: InvoiceLine[]): ContentText[][] {
 	]);
 }
 
-function printNationalNumber(nationalNumber: string, options?: Style): ContentText[] {
-	return [
-		{
-			...options,
-			text: nationalNumber
-				.replace(/ /g, '')
-				.replace(/(.)(..)(..)(..)(...)(...)(..)/, '$1 $2 $3 $4 $5 $6 $7'),
-		},
-	];
+function printNationalNumber(nationalNumber?: string): string {
+	if (!nationalNumber) {
+		return 'N° assuré: _ __ __ __ ___ ___ __';
+	}
+	return nationalNumber
+		.replace(/ /g, '')
+		.replace(/(.)(..)(..)(..)(...)(...)(..)/, '$1 $2 $3 $4 $5 $6 $7');
 }
 
 function printAddress(address: Address, options?: Style): ContentText[] {
@@ -53,14 +51,10 @@ function printCompany(company: Company, options?: Style): ContentText[] {
 }
 
 function printPerson(person: Person, options?: Style): ContentText[] {
-	const hasNationalNumber =
-		typeof person.nationalNumber === 'string' && person.nationalNumber.length > 0;
-	const showNationalNumberSlot = person.nationalNumber === true || person.nationalNumber === '';
 	return [
 		{ ...options, text: person.name },
 		...(person.address ? printAddress(person.address, options) : []),
-		...(hasNationalNumber ? printNationalNumber(person.nationalNumber as string, options) : []),
-		...(showNationalNumberSlot ? [{ ...options, text: 'N° assuré: _ __ __ __ ___ ___ __' }] : []),
+		{ ...options, text:  printNationalNumber(person.nationalNumber) },
 	];
 }
 
